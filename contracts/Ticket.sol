@@ -7,12 +7,13 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+// Author: @vitor.furio
 contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    string notUsedUri = "ipfs://example/NaoUsado";
-    string usedUri = "ipfs://example/Usado";
+    string whiteImage = "ipfs://QmRDYcjmr2rXNsdrCcggKTihxZjSZxvuRxN3WDLBubGoq7";
+    string blackImage = "ipfs://QmfUFoUa8GPkCiW7JgSZP7ZxSFSYU8zZgerDULezfoFoqC";
 
     constructor() ERC721("Ticket", "TKT") {}
 
@@ -20,13 +21,17 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, notUsedUri);
+        _setTokenURI(tokenId, whiteImage);
     }
 
-    function UseTicket(uint256 tokenId) public {
-        require(ownerOf(tokenId) == msg.sender, "Ticket: Caller is not the owner of the token");
-        _setTokenURI(tokenId, usedUri);
+    function ChangeImage(uint256 tokenId) public {
+    require(ownerOf(tokenId) == msg.sender, "Ticket: Caller is not the owner of the token");
+    if (keccak256(bytes(tokenURI(tokenId))) == keccak256(bytes(whiteImage))) {
+        _setTokenURI(tokenId, blackImage);
+    } else {
+        _setTokenURI(tokenId, whiteImage);
     }
+}
 
 
     // The following functions are overrides required by Solidity.
