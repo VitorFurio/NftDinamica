@@ -12,8 +12,13 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    string whiteImage = "ipfs://QmRDYcjmr2rXNsdrCcggKTihxZjSZxvuRxN3WDLBubGoq7";
-    string blackImage = "ipfs://QmfUFoUa8GPkCiW7JgSZP7ZxSFSYU8zZgerDULezfoFoqC";
+    string inicialImage = "ipfs://ImagemInicial";
+    string option1 = "ipfs://Imagem1";
+    string option2 = "ipfs://Imagem2";
+    string option3 = "ipfs://Imagem3";
+
+    mapping(uint256 => bool) private _used; // Mapping token id to token state
+    uint256 private randomSeed;
 
     constructor() ERC721("Ticket", "TKT") {}
 
@@ -21,17 +26,69 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, whiteImage);
+        _setTokenURI(tokenId, inicialImage);
     }
 
-    function ChangeImage(uint256 tokenId) public {
-    require(ownerOf(tokenId) == msg.sender, "Ticket: Caller is not the owner of the token");
-    if (keccak256(bytes(tokenURI(tokenId))) == keccak256(bytes(whiteImage))) {
-        _setTokenURI(tokenId, blackImage);
-    } else {
-        _setTokenURI(tokenId, whiteImage);
+    function UseTicket(uint256 tokenId) public {
+        _requireMinted(tokenId);
+        require(!_used[tokenId], "Ticket:The ticket has already been used");
+        require(ownerOf(tokenId) == msg.sender, "Ticket: Caller is not the owner of the token");
+        _usedTicket(tokenId);  
     }
-}
+
+    function _genRandomNumber() internal returns (uint256) {
+        uint256 randomNumber = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomSeed)));
+        randomSeed = randomNumber;
+        return randomNumber;
+    }
+
+    function _usedTicket(uint256 tokenId) internal {
+        uint256 randomNumber = _genRandomNumber();
+        uint256 option = randomNumber % 3;
+        string memory usedImage;
+        if (option == 0) {
+            usedImage=option1;
+        } else if (option == 1) {
+            usedImage=option2;
+        } else {
+            usedImage=option3;
+        }
+        _setTokenURI(tokenId, usedImage);
+        _used[tokenId] = true;
+    }
+
+    function IsTicketUsed(uint256 ticketId) public view returns (bool) {
+        return _used[ticketId];
+    }
+
+    function ResetTicket(uint256 tokenId) public onlyOwner{
+        _requireMinted(tokenId);
+        require(_used[tokenId], "Ticket:The ticket has already been reseted");
+        _setTokenURI(tokenId, inicialImage);
+        _used[tokenId] = false;
+    }
+
+// funções de verificação instantanea:
+    function UseFirstTicket() public{
+        uint256[] memory ticketsNaoUtilizados = _getNotUsedTicket(msg.sender);
+        _usedTicket(ticketsNaoUtilizados[0]);
+    }
+
+    function _getNotUsedTicket(address wallet) internal view returns (uint256[] memory) {
+        uint256[] memory ticketsNaoUtilizados;
+        uint256 totalTickets = balanceOf(wallet);
+        uint256 contador = 0;
+        for (uint256 i = 0; i < totalTickets; i++) {
+            uint256 ticketId = tokenOfOwnerByIndex(wallet, i);
+
+            if (!_used[ticketId]) {
+                ticketsNaoUtilizados[contador] = ticketId;
+                contador++;
+            }
+        }
+        return ticketsNaoUtilizados;
+    }
+
 
 
     // The following functions are overrides required by Solidity.
