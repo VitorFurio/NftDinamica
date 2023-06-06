@@ -1,0 +1,19 @@
+{
+    "name": "Infinity White",
+    "description": "Esta é a logo da Infinity na cor branca em um fundo preto",
+    "image": "ipfs://QmZRe1gw2heyZQ36D5ZndB27XfB2AgRe8Dwoyu2vrjw57T",
+    "attributes": [
+      {
+        "trait_type": "Raridade",
+        "value": "Normal"
+      },
+      {
+        "trait_type": "Cor da logo",
+        "value": "Branca"
+      },
+      {
+        "trait_type": "Cor do fundo",
+        "value": "Preto"
+      }
+    ]
+  }

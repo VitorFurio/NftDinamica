@@ -1,0 +1,19 @@
+{
+    "name": "Ticket Não Usado",
+    "description": "Este Ticket ainda não foi utilizado. Ao ser utilizado em um validador Infinity, este ticket muda sua forma e descrição de maneira aleatória, se transformando em algo completamente novo! Use-o!",
+    "image": "ipfs://QmZJmKLZnF27uQ1z2VFVJpc6Mx2ciGi99rYFMNXNNPsnon",
+    "attributes": [
+      {
+        "trait_type": "Raridade",
+        "value": "--"
+      },
+      {
+        "trait_type": "Cor da logo",
+        "value": "--"
+      },
+      {
+        "trait_type": "Cor do fundo",
+        "value": "Cinza"
+      }
+    ]
+  }

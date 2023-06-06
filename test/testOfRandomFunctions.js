@@ -38,14 +38,21 @@ async function main() {
   let normal=0;
   let rara = 0;
   let superRara=0;
+  let inicialImage = "ipfs://QmeCp6p5x5Td6VzS38BJvVyveDUEyEt2pXD7jjBduDTGiV";
+  let normalImage1 = "ipfs://QmUabiSMedWzM7sQPaTtJAd8JetSP9QhT2qXbhN3ynGkUP";
+  let normalImage2 = "ipfs://QmUuUqHVwsDpnY6ZvsXMAPsNptqMYCRB2Y6PiV1s1p2ttF";
+  let rareImage1 = "ipfs://QmQk4huRhY2roxMU4ssAX6sbQwNhb2QoJn7D9mAZsbZZsj";
+  let rareImage2 = "ipfs://QmTDAxAUeX6q4cn2Jfx8wqgJcPjC7Lz3TZ3mEN9cAhgddb";
+  let superRareImage = "ipfs://QmQSQNsBbQj3c7zeipptxdeYTpYAyajJx3uxFYKfiBYAWh";
+
   for (let i = 0; i < tokenURIs.length; i++) {
-    if(tokenURIs[i]=="ipfs://ImagemNormal1" || tokenURIs[i]=="ipfs://ImagemNormal2"){
+    if(tokenURIs[i]==normalImage1 || tokenURIs[i]==normalImage2){
       normal++;
     }
-    if(tokenURIs[i]=="ipfs://ImagemRara1" || tokenURIs[i]=="ipfs://ImagemRara2"){
+    if(tokenURIs[i]==rareImage1 || tokenURIs[i]==rareImage2){
       rara++;
     }
-    if(tokenURIs[i]=="ipfs://ImagemSuperRara"){
+    if(tokenURIs[i]==superRareImage){
       superRara++;
     }
     console.log(tokenURIs[i]);

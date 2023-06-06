@@ -1,0 +1,19 @@
+{
+    "name": "Infinity Original White",
+    "description": "Esta é a logo oficial da Infinity como o seu característico colorido degradê em um fundo Branco",
+    "image": "ipfs://QmTMJCYqxhadBmXK2BHxhyL8pLWxuRyFujkL8xMtNZeh71",
+    "attributes": [
+      {
+        "trait_type": "Raridade",
+        "value": "Raro"
+      },
+      {
+        "trait_type": "Cor da logo",
+        "value": "Original"
+      },
+      {
+        "trait_type": "Cor do fundo",
+        "value": "Branco"
+      }
+    ]
+  }

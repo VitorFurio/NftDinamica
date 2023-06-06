@@ -7,12 +7,12 @@ describe("Ticket", function () {
   let owner;
   let account1;
   let account2;
-  let inicialImage = "ipfs://ImagemInicial";
-  let normalImage1 = "ipfs://ImagemNormal1";
-  let normalImage2 = "ipfs://ImagemNormal2";
-  let rareImage1 = "ipfs://ImagemRara1";
-  let rareImage2 = "ipfs://ImagemRara2";
-  let superRareImage = "ipfs://ImagemSuperRara";
+  let inicialImage = "ipfs://QmeCp6p5x5Td6VzS38BJvVyveDUEyEt2pXD7jjBduDTGiV";
+  let normalImage1 = "ipfs://QmUabiSMedWzM7sQPaTtJAd8JetSP9QhT2qXbhN3ynGkUP";
+  let normalImage2 = "ipfs://QmUuUqHVwsDpnY6ZvsXMAPsNptqMYCRB2Y6PiV1s1p2ttF";
+  let rareImage1 = "ipfs://QmQk4huRhY2roxMU4ssAX6sbQwNhb2QoJn7D9mAZsbZZsj";
+  let rareImage2 = "ipfs://QmTDAxAUeX6q4cn2Jfx8wqgJcPjC7Lz3TZ3mEN9cAhgddb";
+  let superRareImage = "ipfs://QmQSQNsBbQj3c7zeipptxdeYTpYAyajJx3uxFYKfiBYAWh";
 
   beforeEach(async function () {
     Ticket = await ethers.getContractFactory("Ticket");
@@ -23,8 +23,8 @@ describe("Ticket", function () {
 
   describe("Deployment", function () {
     it("deve ter o nome e símbolo corretos", async function () {
-      expect(await ticketContract.name()).to.equal("Ticket");
-      expect(await ticketContract.symbol()).to.equal("TKT");
+      expect(await ticketContract.name()).to.equal("Infinity Ticket");
+      expect(await ticketContract.symbol()).to.equal("IFTY");
     });
   });
 

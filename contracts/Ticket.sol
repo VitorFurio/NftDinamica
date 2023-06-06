@@ -12,17 +12,17 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    string inicialImage = "ipfs://ImagemInicial";
-    string normalImage1 = "ipfs://ImagemNormal1";
-    string normalImage2 = "ipfs://ImagemNormal2";
-    string rareImage1 = "ipfs://ImagemRara1";
-    string rareImage2 = "ipfs://ImagemRara2";
-    string superRareImage = "ipfs://ImagemSuperRara";
+    string inicialImage = "ipfs://QmeCp6p5x5Td6VzS38BJvVyveDUEyEt2pXD7jjBduDTGiV";
+    string normalImage1 = "ipfs://QmUabiSMedWzM7sQPaTtJAd8JetSP9QhT2qXbhN3ynGkUP";
+    string normalImage2 = "ipfs://QmUuUqHVwsDpnY6ZvsXMAPsNptqMYCRB2Y6PiV1s1p2ttF";
+    string rareImage1 = "ipfs://QmQk4huRhY2roxMU4ssAX6sbQwNhb2QoJn7D9mAZsbZZsj";
+    string rareImage2 = "ipfs://QmTDAxAUeX6q4cn2Jfx8wqgJcPjC7Lz3TZ3mEN9cAhgddb";
+    string superRareImage = "ipfs://QmQSQNsBbQj3c7zeipptxdeYTpYAyajJx3uxFYKfiBYAWh";
 
     mapping(uint256 => bool) private _used; // Mapping token id to token state
     uint256 private randomSeed;
 
-    constructor() ERC721("Ticket", "TKT") {}
+    constructor() ERC721("Infinity Ticket", "IFTY") {}
 
     function safeMint(address to) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();

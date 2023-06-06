@@ -1,0 +1,19 @@
+{
+  "name": "Infinity Original Colorful",
+  "description": "Esta é a logo oficial da Infinity como o seu característico colorido degradê em um fundo colorido",
+  "image": "ipfs://QmR5oyzLNBzvmRQg2EsW9pzQJhNZo3215JEgcPZKHXHwMK",
+  "attributes": [
+    {
+      "trait_type": "Raridade",
+      "value": "Super Raro"
+    },
+    {
+      "trait_type": "Cor da logo",
+      "value": "Original"
+    },
+    {
+      "trait_type": "Cor do fundo",
+      "value": "Colorido"
+    }
+  ]
+}
