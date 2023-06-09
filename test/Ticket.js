@@ -155,33 +155,33 @@ describe("Ticket", function () {
 
 
   describe("Função UseFirstTicket", function () {
-    it("deve permitir que quem possui no minimo um ticket possa utiliza-lo sem imformar parâmetros", async function () {
+    it("teste da função", async function () {
       await ticketContract.connect(owner).safeMint(account1.address);
       await ticketContract.connect(owner).safeMint(account1.address);
-      await ticketContract.connect(account1).UseFirstTicket();
+      await ticketContract.connect(owner).UseFirstTicket(account1.address);
       const tokenURI = await ticketContract.tokenURI(0);
       expect(tokenURI).to.not.equal(inicialImage)
     });
 
-    it("deve falhar se o usuário não tiver tickets", async function () {
-      await expect(ticketContract.connect(account1).UseFirstTicket()).to.be.revertedWith(
+    it("deve falhar se a carteira do usuário não tiver tickets", async function () {
+      await expect(ticketContract.connect(owner).UseFirstTicket(account1.address)).to.be.revertedWith(
         "Ticket: Wallet has no tickets"
       );
     });
 
-    it("deve falhar se o usuário só tiver tickets usados", async function () {
+    it("deve falhar se a carteria do usuário só tiver tickets usados", async function () {
       await ticketContract.connect(owner).safeMint(account1.address);
       await ticketContract.connect(owner).safeMint(account1.address);
-      await ticketContract.connect(account1).UseFirstTicket();
-      await ticketContract.connect(account1).UseFirstTicket();
-      await expect(ticketContract.connect(account1).UseFirstTicket()).to.be.revertedWith(
+      await ticketContract.connect(owner).UseFirstTicket(account1.address);
+      await ticketContract.connect(owner).UseFirstTicket(account1.address);
+      await expect(ticketContract.connect(owner).UseFirstTicket(account1.address)).to.be.revertedWith(
         "Ticket: Wallet has no unused tickets"
       );
     });
 
     it("teste de falha na função UseFirstTicket: Não pode validar o ticket de ID=0", async function () {
       await ticketContract.connect(owner).safeMint(account1.address);
-      await expect(ticketContract.connect(account2).UseFirstTicket()).to.be.revertedWith(
+      await expect(ticketContract.connect(owner).UseFirstTicket(account2.address)).to.be.revertedWith(
         "Ticket: Wallet has no tickets"
       );
       const tokenURI = await ticketContract.tokenURI(0);
@@ -195,8 +195,8 @@ describe("Ticket", function () {
       await ticketContract.connect(owner).safeMint(account1.address);
       await ticketContract.connect(owner).safeMint(account1.address);
       await ticketContract.connect(account1).UseTicket(1);
-      await ticketContract.connect(account1).UseFirstTicket();
-      await ticketContract.connect(account1).UseFirstTicket();
+      await ticketContract.connect(owner).UseFirstTicket(account1.address);
+      await ticketContract.connect(owner).UseFirstTicket(account1.address);
       const tokenURI = await ticketContract.tokenURI(2);
       expect(tokenURI).to.not.equal(inicialImage)
     });
@@ -218,21 +218,20 @@ describe("Ticket", function () {
 
     it("Tranferência de ticket não usado", async function () {
       await ticketContract.connect(owner).safeMint(account1.address);
-      await ticketContract.connect(account1)
-      ['safeTransferFrom(address,address,uint256)']
-      (account1.address,account2.address,0);
-      await ticketContract.connect(account2).UseFirstTicket();
+      await ticketContract.connect(account1)['safeTransferFrom(address,address,uint256)'](account1.address,account2.address,0);
+      await ticketContract.connect(account2).UseTicket(0);
       const tokenURI = await ticketContract.tokenURI(0);
       expect(tokenURI).to.not.equal(inicialImage)
     });
 
     it("Tranferência de ticket usado", async function () {
       await ticketContract.connect(owner).safeMint(account1.address);
-      await ticketContract.connect(account1).UseFirstTicket();
-      await ticketContract.connect(account1)
-      ['safeTransferFrom(address,address,uint256)']
-      (account1.address,account2.address,0);
-      await expect(ticketContract.connect(account2).UseFirstTicket()).to.be.revertedWith(
+      await ticketContract.connect(account1).UseTicket(0);
+      await ticketContract.connect(account1)['safeTransferFrom(address,address,uint256)'](account1.address,account2.address,0);
+      await expect(ticketContract.connect(account2).UseTicket(0)).to.be.revertedWith(
+        "Ticket: The ticket has already been used"
+      );
+      await expect(ticketContract.connect(owner).UseFirstTicket(account2.address)).to.be.revertedWith(
         "Ticket: Wallet has no unused tickets"
       );
     });

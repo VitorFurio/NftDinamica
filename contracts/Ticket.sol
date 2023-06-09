@@ -4,11 +4,12 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 // Author: @vitor.furio
-contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
+contract Ticket is ERC721, ERC721Enumerable, ERC721Burnable, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
@@ -88,8 +89,8 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     }
 
 // funções de verificação instantânea:
-    function UseFirstTicket() public{
-        uint256[] memory unusedTicks = GetNotUsedTicket(msg.sender);
+    function UseFirstTicket(address user) public onlyOwner{
+        uint256[] memory unusedTicks = GetNotUsedTicket(user);
         _useTicket(unusedTicks[0]);
     }
 
