@@ -62,7 +62,61 @@ describe("Ticket", function () {
     });
   });
 
+  describe("Funções de leitura do contrato", function () {
+    it("deve retornar o estado correto do ticket ", async function () {
+      await ticketContract.connect(owner).safeMint(account1.address);
+      await ticketContract.connect(owner).safeMint(account1.address);
+      await ticketContract.connect(account1).UseTicket(0);
+      const token0state = await ticketContract.IsTicketUsed(0);
+      const token1state = await ticketContract.IsTicketUsed(1);
+      expect(token0state).to.equal(true);
+      expect(token1state).to.equal(false);
+    });
 
+    it("deve retornar erro ao tentar acessar informações de tokens que não existem", async function () {
+      await expect(ticketContract.connect(owner).IsTicketUsed(1)).to.be.revertedWith(
+        "ERC721: invalid token ID"
+      );
+    });
+
+    it("Deve retornar erro ao ser chamado por uma carteira que não tem tickets", async function () {
+      await expect(ticketContract.GetNotUsedTicket(account1.address)).to.be.revertedWith(
+        "Ticket: Wallet has no tickets"
+      );
+    });
+
+    it("Deve retornar erro ao ser chamado por uma carteira que já usou todos os tickets", async function () {
+      await ticketContract.connect(owner).safeMint(account1.address);
+      await ticketContract.connect(account1).UseTicket(0);
+      await expect(ticketContract.GetNotUsedTicket(account1.address)).to.be.revertedWith(
+        "Ticket: Wallet has no unused tickets"
+      );
+    });
+
+    it("Deve retornar os tickets não utilizados da carteira", async function () {
+      await ticketContract.connect(owner).safeMint(account1.address);
+      await ticketContract.connect(owner).safeMint(account1.address);
+      await ticketContract.connect(owner).safeMint(account1.address);
+      let ticketsBigNumber = await ticketContract.GetNotUsedTicket(account1.address);
+      await ticketContract.connect(account1).UseTicket(ticketsBigNumber[0]);
+      await ticketContract.connect(account1).UseTicket(ticketsBigNumber[1]);
+      ticketsBigNumber = await ticketContract.GetNotUsedTicket(account1.address);
+      let tickets=[];
+      for(let i=0;i<ticketsBigNumber.length;i++){
+          tickets[i]=ticketsBigNumber[i].toNumber();
+      }
+      expect(tickets).to.deep.equal([2]);
+    });
+
+    it("Se retorna Big Number", async function () {
+      await ticketContract.connect(owner).safeMint(account1.address);
+      await ticketContract.connect(owner).safeMint(account1.address);
+      await ticketContract.connect(owner).safeMint(account1.address);
+      let tickets = await ticketContract.tokenOfOwnerByIndex(account1.address,1);
+      expect(tickets.toNumber()).to.equal(1);
+    });
+
+  });
 
   describe("Função UseTicket", function () {
 

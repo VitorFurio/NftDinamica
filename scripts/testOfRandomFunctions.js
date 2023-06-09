@@ -20,6 +20,9 @@ async function main() {
     await ticketContract.connect(deployer).safeMint(deployer.address);
   }
 
+  let notUsedTicket = await ticketContract.connect(deployer).GetNotUsedTicket(deployer.address);
+  console.log(notUsedTicket)
+
 // Utilização dos itens
   for (let i = 0; i < qntd; i++) {
     await ticketContract.connect(deployer).UseFirstTicket();

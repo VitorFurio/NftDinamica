@@ -20,6 +20,7 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     string superRareImage = "ipfs://QmQSQNsBbQj3c7zeipptxdeYTpYAyajJx3uxFYKfiBYAWh";
 
     mapping(uint256 => bool) private _used; // Mapping token id to token state
+    
     uint256 private randomSeed;
 
     constructor() ERC721("Infinity Ticket", "IFTY") {}
@@ -75,6 +76,7 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     }
 
     function IsTicketUsed(uint256 ticketId) public view returns (bool) {
+        _requireMinted(ticketId);
         return _used[ticketId];
     }
 
@@ -85,13 +87,13 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         _used[tokenId] = false;
     }
 
-// funções de verificação instantanea:
+// funções de verificação instantânea:
     function UseFirstTicket() public{
-        uint256[] memory unusedTicks = _getNotUsedTicket(msg.sender);
+        uint256[] memory unusedTicks = GetNotUsedTicket(msg.sender);
         _useTicket(unusedTicks[0]);
     }
 
-    function _getNotUsedTicket(address wallet) internal view returns (uint256[] memory) {
+    function GetNotUsedTicket(address wallet) public view returns (uint256[] memory) {
         uint256 totalTickets = balanceOf(wallet);
         require(totalTickets>0, "Ticket: Wallet has no tickets");
 
@@ -105,7 +107,13 @@ contract Ticket is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
             }
         }
         require(count>0, "Ticket: Wallet has no unused tickets");
-        return unusedTicks;
+
+        // Criar um novo vetor com o tamanho exato dos tickets não utilizados
+        uint256[] memory finalUnusedTicks = new uint256[](count);
+        for (uint256 i = 0; i < count; i++) {
+            finalUnusedTicks[i] = unusedTicks[i];
+        }
+        return finalUnusedTicks;
     }
 
 
